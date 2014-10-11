@@ -18,4 +18,4 @@ mvn archetype:generate -DarchetypeArtifactId=android-quickstart -DarchetypeGroup
 
 Installiert und _startet_ die app auf dem Device
 
-
+mvn clean install -Pdesktop
