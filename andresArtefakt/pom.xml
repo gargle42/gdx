@@ -177,8 +177,11 @@
             </modules>
         </profile>
     </profiles>
-
+<!--
+nur so zum test
+-->
     <modules>
         <module>core</module>
     </modules>
 </project>
+
