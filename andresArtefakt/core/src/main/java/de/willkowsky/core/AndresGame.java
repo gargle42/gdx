@@ -27,6 +27,7 @@ public class AndresGame implements ApplicationListener {
     private static final float INVADER_HEIGHT = 3f;
     private static final float INVADER_WIDTH = 1f;
 
+	//testkommentar
     private Texture texture;
     private ModelBatch modelBatch;
     private OrthographicCamera orthographicCamera;
