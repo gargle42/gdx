@@ -60,11 +60,12 @@ public class AndresGame implements ApplicationListener {
         perspectiveCamera = new PerspectiveCamera(67, Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight());
         perspectiveCamera.position.set(my3dVector);
-        //		perspectiveCamera.position.set(10f, 10f, 10f);
         perspectiveCamera.lookAt(0f, 0f, 0f);
         perspectiveCamera.near = 1f;
         perspectiveCamera.far = 300f;
         perspectiveCamera.update();
+
+
 
         ModelBuilder modelBuilder = new ModelBuilder();
         Model model = modelBuilder.createBox(INVADER_WIDTH, INVADER_HEIGHT, 4f,
