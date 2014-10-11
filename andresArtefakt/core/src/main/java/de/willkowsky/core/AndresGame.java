@@ -65,8 +65,6 @@ public class AndresGame implements ApplicationListener {
         perspectiveCamera.far = 300f;
         perspectiveCamera.update();
 
-
-
         ModelBuilder modelBuilder = new ModelBuilder();
         Model model = modelBuilder.createBox(INVADER_WIDTH, INVADER_HEIGHT, 4f,
                 new Material(TextureAttribute.createDiffuse(texture)),
