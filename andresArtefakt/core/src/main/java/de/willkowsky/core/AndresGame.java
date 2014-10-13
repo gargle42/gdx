@@ -38,10 +38,12 @@ public class AndresGame implements ApplicationListener {
     int transY;
     private List<ModelInstance> instances;
     ModelInstance ship;
+    ModelInstance shot;
     private Vector3 my3dVector = new Vector3(0f, 0f, 40f);
-    private boolean shipFired;
+    private boolean shotActive = false;
     private float shipBulletYPos;
     private List<Invader> invaders;
+    private Vector3 shotPosition = new Vector3();
 
     @Override
     public void create() {
@@ -52,13 +54,13 @@ public class AndresGame implements ApplicationListener {
         modelBatch = new ModelBatch();
 
         orthographicCamera = new OrthographicCamera(Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight());
+            Gdx.graphics.getHeight());
         orthographicCamera.setToOrtho(true, Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight());
+            Gdx.graphics.getHeight());
         orthographicCamera.update();
 
         perspectiveCamera = new PerspectiveCamera(67, Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight());
+            Gdx.graphics.getHeight());
         perspectiveCamera.position.set(my3dVector);
         perspectiveCamera.lookAt(0f, 0f, 0f);
         perspectiveCamera.near = 1f;
@@ -74,18 +76,23 @@ public class AndresGame implements ApplicationListener {
         ship.transform.translate(0f, (float) -17, 0f);
         instances.add(ship);
 
+        shot = new ModelInstance(model);
+        //        shot.transform.rotate(0f, 0f, 1f, 30f);
+        shot.transform.translate(0f, (float) -17, 0f);
+
         shapeRenderer = new ShapeRenderer();
 
         transY = Gdx.graphics.getHeight() / 2;
         transX = Gdx.graphics.getWidth() / 2;
 
-        Bullet.init();
+        //        Bullet.init();
     }
 
     private Model getModel(ModelBuilder modelBuilder) {
-        return modelBuilder.createBox(INVADER_WIDTH, INVADER_HEIGHT, INVADER_DEPTH,
-                    new Material(TextureAttribute.createDiffuse(texture)),
-                    Position | Normal | TextureCoordinates);
+        return modelBuilder
+            .createBox(INVADER_WIDTH, INVADER_HEIGHT, INVADER_DEPTH,
+                new Material(TextureAttribute.createDiffuse(texture)),
+                Position | Normal | TextureCoordinates);
     }
 
     private List<Invader> getInvaders(Model model) {
@@ -94,7 +101,9 @@ public class AndresGame implements ApplicationListener {
         for (int i = 0; i < INVADER_COLUMNS; i++) {
             for (int j = 0; j < INVADER_ROWS; j++) {
                 Invader invader = new Invader(model);
-                invader.transform.translate((float) i * SPACE_X - (INVADER_COLUMNS + INVADER_WIDTH), (float) j * SPACE_Y - (INVADER_ROWS + INVADER_HEIGHT), 0f);
+                invader.transform.translate(
+                    (float) i * SPACE_X - (INVADER_COLUMNS + INVADER_WIDTH),
+                    (float) j * SPACE_Y - (INVADER_ROWS + INVADER_HEIGHT), 0f);
                 result.add(invader);
             }
         }
@@ -112,21 +121,48 @@ public class AndresGame implements ApplicationListener {
     }
 
     public void render(float delta) {
+        handleKeyboardInput();
+        recalculateGame();
 
         resetView();
-        handleKeyboardInput();
         drawBox(delta);
-//        drawCrosshairs();
-
         perspectiveCamera.update();
         orthographicCamera.update();
+    }
+
+    private void recalculateGame() {
+        if (shotActive) {
+            //            shot.transform.rotate(0f, 1f, 1f, 1f);
+            shot.transform.translate(0f, .2f, 0f);
+            Vector3 instancePosition = new Vector3();
+            ModelInstance destroyedEnemy = null;
+            for (ModelInstance instance : instances) {
+                shot.transform.getTranslation(shotPosition);
+
+                // das eigene Raumschiff ist Teil der instancelist,
+                // deshalb wirds vom Schuss ignoriert
+                if (instance != ship) {
+                    if (shotPosition.dst(instance.transform
+                        .getTranslation(instancePosition)) < 1.5f) {
+                        destroyedEnemy = instance;
+                        shotActive = false;
+                        break;
+                    }
+                }
+            }
+
+            if (destroyedEnemy != null) {
+                instances.remove(destroyedEnemy);
+//                instances.remove(shot);
+            }
+        }
     }
 
     private void resetView() {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight());
+            Gdx.graphics.getHeight());
     }
 
     private void drawBox(float delta) {
@@ -162,22 +198,14 @@ public class AndresGame implements ApplicationListener {
         } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             my3dVector.z += .1;
         } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            shipFired = true;
-            float shipPosY = 0;
-            shipBulletYPos = shipPosY;
+            shotActive = true;
+            //            shot.transform.setToTranslation(0f, 0f, 0f);
+            instances.add(shot);
+
         }
         perspectiveCamera.position.set(my3dVector);
         perspectiveCamera.update();
 
-    }
-
-    private void drawCrosshairs() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(1f, 1f, 1f, 1);
-        Gdx.gl.glLineWidth(1);
-        shapeRenderer.line(0, transY, 0, Gdx.graphics.getWidth(), transY, 0);
-        shapeRenderer.line(transX, 0, 0, transX, Gdx.graphics.getHeight(), 0);
-        shapeRenderer.end();
     }
 
     @Override
