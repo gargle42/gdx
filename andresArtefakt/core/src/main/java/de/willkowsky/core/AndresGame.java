@@ -22,32 +22,31 @@ import static com.badlogic.gdx.graphics.VertexAttributes.Usage.*;
 public class AndresGame implements ApplicationListener {
     public static final int INVADER_COLUMNS = 10;
     public static final int INVADER_ROWS = 5;
-    private static final float SPACE_X = 2.5f;
-    private static final float SPACE_Y = 5.5f;
-    private static final float INVADER_HEIGHT = 3f;
+    private static final float SPACE_X = 2f;
+    private static final float SPACE_Y = 2f;
+    private static final float INVADER_HEIGHT = 1f;
     private static final float INVADER_WIDTH = 1f;
+    private static final float INVADER_DEPTH = 1f;
 
-	//testkommentar
     private Texture texture;
     private ModelBatch modelBatch;
     private OrthographicCamera orthographicCamera;
-    private ModelInstance modelInstance;
     private PerspectiveCamera perspectiveCamera;
     private ShapeRenderer shapeRenderer;
 
     int transX;
     int transY;
-    private float boxTranslationX = 0f;
     private List<ModelInstance> instances;
-    private float cameraYPos = 0;
     ModelInstance ship;
-    private Vector3 my3dVector = new Vector3(0f, 0f, 30f);
+    private Vector3 my3dVector = new Vector3(0f, 0f, 40f);
     private boolean shipFired;
     private float shipBulletYPos;
+    private List<Invader> invaders;
 
     @Override
     public void create() {
         instances = new ArrayList<ModelInstance>();
+        invaders = new ArrayList<Invader>();
 
         texture = new Texture(Gdx.files.internal("libgdx-logo.png"));
         modelBatch = new ModelBatch();
@@ -67,10 +66,9 @@ public class AndresGame implements ApplicationListener {
         perspectiveCamera.update();
 
         ModelBuilder modelBuilder = new ModelBuilder();
-        Model model = modelBuilder.createBox(INVADER_WIDTH, INVADER_HEIGHT, 4f,
-                new Material(TextureAttribute.createDiffuse(texture)),
-                Position | Normal | TextureCoordinates);
-        instances.addAll(getInvaders(model));
+        Model model = getModel(modelBuilder);
+        invaders.addAll(getInvaders(model));
+        instances.addAll(invaders);
 
         ship = new ModelInstance(model);
         ship.transform.translate(0f, (float) -17, 0f);
@@ -84,14 +82,20 @@ public class AndresGame implements ApplicationListener {
         Bullet.init();
     }
 
-    private List<ModelInstance> getInvaders(Model model) {
-        List<ModelInstance> result = new ArrayList<ModelInstance>();
+    private Model getModel(ModelBuilder modelBuilder) {
+        return modelBuilder.createBox(INVADER_WIDTH, INVADER_HEIGHT, INVADER_DEPTH,
+                    new Material(TextureAttribute.createDiffuse(texture)),
+                    Position | Normal | TextureCoordinates);
+    }
+
+    private List<Invader> getInvaders(Model model) {
+        List<Invader> result = new ArrayList<Invader>();
 
         for (int i = 0; i < INVADER_COLUMNS; i++) {
             for (int j = 0; j < INVADER_ROWS; j++) {
-                ModelInstance modelInstance = new ModelInstance(model);
-                modelInstance.transform.translate((float) i * SPACE_X - (INVADER_COLUMNS + INVADER_WIDTH), (float) j * SPACE_Y - (INVADER_ROWS + INVADER_HEIGHT), 0f);
-                result.add(modelInstance);
+                Invader invader = new Invader(model);
+                invader.transform.translate((float) i * SPACE_X - (INVADER_COLUMNS + INVADER_WIDTH), (float) j * SPACE_Y - (INVADER_ROWS + INVADER_HEIGHT), 0f);
+                result.add(invader);
             }
         }
 
@@ -104,10 +108,18 @@ public class AndresGame implements ApplicationListener {
 
     @Override
     public void render() {
+        render(1f);
+    }
+
+    public void render(float delta) {
+
         resetView();
         handleKeyboardInput();
-        drawBox();
+        drawBox(delta);
 //        drawCrosshairs();
+
+        perspectiveCamera.update();
+        orthographicCamera.update();
     }
 
     private void resetView() {
@@ -117,15 +129,17 @@ public class AndresGame implements ApplicationListener {
                 Gdx.graphics.getHeight());
     }
 
-    private void drawBox() {
+    private void drawBox(float delta) {
         modelBatch.begin(perspectiveCamera);
-        modelBatch.render(getModelInstance());
+        updateModels(delta);
+        modelBatch.render(instances);
         modelBatch.end();
     }
 
-    private List<ModelInstance> getModelInstance() {
-
-        return instances;
+    private void updateModels(float delta) {
+        for (Invader modelInstance : invaders) {
+            modelInstance.updateInvader(delta);
+        }
     }
 
     private void handleKeyboardInput() {
@@ -177,4 +191,5 @@ public class AndresGame implements ApplicationListener {
     @Override
     public void dispose() {
     }
+
 }
