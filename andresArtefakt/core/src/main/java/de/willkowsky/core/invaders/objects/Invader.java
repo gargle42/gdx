@@ -1,4 +1,4 @@
-package de.willkowsky.core;
+package de.willkowsky.core.invaders.objects;
 
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -7,6 +7,12 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.Random;
 
 public class Invader extends ModelInstance {
+
+    public static final float HEIGHT = 2f;
+    public static final float WIDTH = 2f;
+    public static final float DEPTH = 2f;
+
+    public static final float DEAD_ZONE = 1.5f;
 
     private float totalDegrees = 0f;
     private float direction = 1f;
@@ -33,7 +39,7 @@ public class Invader extends ModelInstance {
         return (random.nextInt(2) % 2) == 1 ? -1 : 1;
     }
 
-    public void updateInvader(float delta) {
+    public void update(float delta) {
         float degrees = getDegrees(delta);
         totalDegrees += degrees;
         transform.rotate(axis, degrees);
