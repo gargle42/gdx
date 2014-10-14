@@ -3,7 +3,7 @@ gdx
 
 Spielereien mit der GDX-Lib
 
-Jens und Andre Wilkowsky, 10.2014
+Jens und Andre Willkowsky, 10.2014
 
 mvn archetype:generate -DarchetypeRepository=local -DarchetypeRepository=$HOME/.m2/repository -DarchetypeGroupId=com.badlogic.gdx -DarchetypeArtifactId=gdx-archetype -DarchetypeVersion=1.2.0 -DgroupId=de.willkowsky -DartifactId=andresGame2 -Dversion=0.0.1 -Dpackage=de.willkowsky -DJavaGameClassName=AndresGameClass
 
@@ -19,3 +19,6 @@ mvn archetype:generate -DarchetypeArtifactId=android-quickstart -DarchetypeGroup
 Installiert und _startet_ die app auf dem Device
 
 mvn clean install -Pdesktop
+
+
+
