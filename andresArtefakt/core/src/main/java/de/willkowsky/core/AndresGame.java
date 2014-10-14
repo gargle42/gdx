@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.bullet.Bullet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +38,8 @@ public class AndresGame implements ApplicationListener {
     private List<ModelInstance> instances;
     ModelInstance ship;
     ModelInstance shot;
-    private Vector3 my3dVector = new Vector3(0f, 0f, 40f);
+    private Vector3 cameraPosition = new Vector3(0f, 0f, 30f);
     private boolean shotActive = false;
-    private float shipBulletYPos;
     private List<Invader> invaders;
     private Vector3 shotPosition = new Vector3();
 
@@ -61,7 +59,7 @@ public class AndresGame implements ApplicationListener {
 
         perspectiveCamera = new PerspectiveCamera(67, Gdx.graphics.getWidth(),
             Gdx.graphics.getHeight());
-        perspectiveCamera.position.set(my3dVector);
+        perspectiveCamera.position.set(cameraPosition);
         perspectiveCamera.lookAt(0f, 0f, 0f);
         perspectiveCamera.near = 1f;
         perspectiveCamera.far = 300f;
@@ -104,6 +102,7 @@ public class AndresGame implements ApplicationListener {
                 invader.transform.translate(
                     (float) i * SPACE_X - (INVADER_COLUMNS + INVADER_WIDTH),
                     (float) j * SPACE_Y - (INVADER_ROWS + INVADER_HEIGHT), 0f);
+
                 result.add(invader);
             }
         }
@@ -122,25 +121,23 @@ public class AndresGame implements ApplicationListener {
 
     public void render(float delta) {
         handleKeyboardInput();
-        recalculateGame();
-
         resetView();
         drawBox(delta);
         perspectiveCamera.update();
         orthographicCamera.update();
     }
 
-    private void recalculateGame() {
+    private void recalculateShot() {
         if (shotActive) {
             //            shot.transform.rotate(0f, 1f, 1f, 1f);
-            shot.transform.translate(0f, .2f, 0f);
+            shot.transform.translate(0f, .4f, 0f);
             Vector3 instancePosition = new Vector3();
             ModelInstance destroyedEnemy = null;
             for (ModelInstance instance : instances) {
                 shot.transform.getTranslation(shotPosition);
 
                 // das eigene Raumschiff ist Teil der instancelist,
-                // deshalb wirds vom Schuss ignoriert
+                // deshalb wird es vom Schuss ignoriert
                 if (instance != ship) {
                     if (shotPosition.dst(instance.transform
                         .getTranslation(instancePosition)) < 1.5f) {
@@ -153,7 +150,6 @@ public class AndresGame implements ApplicationListener {
 
             if (destroyedEnemy != null) {
                 instances.remove(destroyedEnemy);
-//                instances.remove(shot);
             }
         }
     }
@@ -169,6 +165,9 @@ public class AndresGame implements ApplicationListener {
         modelBatch.begin(perspectiveCamera);
         updateModels(delta);
         modelBatch.render(instances);
+        if (shotActive) {
+            modelBatch.render(shot);
+        }
         modelBatch.end();
     }
 
@@ -176,6 +175,8 @@ public class AndresGame implements ApplicationListener {
         for (Invader modelInstance : invaders) {
             modelInstance.updateInvader(delta);
         }
+
+        recalculateShot();
     }
 
     private void handleKeyboardInput() {
@@ -186,24 +187,27 @@ public class AndresGame implements ApplicationListener {
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             ship.transform.translate(.2f, 0f, 0f);
         } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            my3dVector.x += .1;
+            cameraPosition.x += .1;
         } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            my3dVector.x -= .1;
+            cameraPosition.x -= .1;
         } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            my3dVector.y -= .1;
+            cameraPosition.y -= .1;
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            my3dVector.y += .1;
+            cameraPosition.y += .1;
         } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            my3dVector.z -= .1;
+            cameraPosition.z -= .1;
         } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            my3dVector.z += .1;
+            cameraPosition.z += .1;
         } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            shotActive = true;
-            //            shot.transform.setToTranslation(0f, 0f, 0f);
-            instances.add(shot);
-
+            if (!shotActive) {
+                shotActive = true;
+                Vector3 shipPosition = new Vector3();
+                ship.transform.getTranslation(shipPosition);
+                shot.transform.setToTranslation(shipPosition);
+            }
         }
-        perspectiveCamera.position.set(my3dVector);
+
+        perspectiveCamera.position.set(cameraPosition);
         perspectiveCamera.update();
 
     }
