@@ -8,6 +8,5 @@ public class AndresGameDesktop {
 	public static void main (String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new Game(), config);
-//		new LwjglApplication(new Basic3DTest(), config);
 	}
 }
