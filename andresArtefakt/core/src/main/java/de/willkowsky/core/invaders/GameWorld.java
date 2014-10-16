@@ -2,6 +2,8 @@ package de.willkowsky.core.invaders;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import de.willkowsky.core.invaders.misc.ModelFactory;
 import de.willkowsky.core.invaders.objects.Camera;
 import de.willkowsky.core.invaders.objects.InvasionFleet;
@@ -14,10 +16,11 @@ import java.util.List;
 public class GameWorld {
 
     private ModelBatch modelBatch = new ModelBatch();
-    private InvasionFleet invasionFleet = new InvasionFleet();
     private Camera camera = new Camera();
     private Ship  ship;
     private Shot shot;
+    private InvasionFleet invasionFleet = new InvasionFleet();
+    public static BoundingBox FIELD = new BoundingBox(new Vector3(-30, -20, -1), new Vector3(30, 7, 1));
 
     public GameWorld() {
         init();
@@ -26,6 +29,7 @@ public class GameWorld {
     private void init() {
         ModelFactory factory = ModelFactory.getInstance();
         ship = new Ship(factory.getShipModel());
+        invasionFleet = new InvasionFleet();
         shot = new Shot(factory.getShotModel(), invasionFleet.getInvaders(), ship);
     }
 
@@ -39,6 +43,9 @@ public class GameWorld {
         invasionFleet.update(delta);
         shot.update(delta);
         camera.update();
+
+        if (invasionFleet.hasArrived(ship)) {
+        }
     }
 
     private void renderModels() {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
+import de.willkowsky.core.invaders.GameWorld;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,6 +51,12 @@ public class Shot extends ModelInstance {
         if (isActive()) {
             transform.translate(0f, SHOT_SPEED * delta, 0f);
             checkForHit();
+
+            Vector3 vector = new Vector3();
+             transform.getTranslation(vector);
+            if (!GameWorld.FIELD.contains(vector)) {
+                setActive(false);
+            }
         }
     }
 

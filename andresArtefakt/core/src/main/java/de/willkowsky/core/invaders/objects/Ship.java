@@ -19,4 +19,5 @@ public class Ship extends ModelInstance {
             transform.translate(.2f, 0f, 0f);
         }
     }
+
 }

@@ -10,12 +10,12 @@ public class Camera {
     public static final float Y = -6f;
     public static final float X = 2f;
 
-    private Vector3 cameraPosition = new Vector3(X, Y, 20f);
+    private Vector3 cameraPosition = new Vector3(X, Y, 30f);
 
     private com.badlogic.gdx.graphics.PerspectiveCamera camera;
 
     public Camera() {
-        camera = new com.badlogic.gdx.graphics.PerspectiveCamera(67, Gdx.graphics.getWidth(),
+        camera = new com.badlogic.gdx.graphics.PerspectiveCamera(80, Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight());
         camera.position.set(cameraPosition);
         camera.lookAt(X, Y, 0f);
