@@ -37,8 +37,6 @@ public class Shot extends ModelInstance {
                 return true; // return true to indicate the event was handled
             }
         });
-
-
     }
 
     private void checkForHit() {
