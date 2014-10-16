@@ -12,6 +12,7 @@ public class Game extends com.badlogic.gdx.Game {
         currentScreen.render(Gdx.graphics.getDeltaTime());
     }
 
+
     private void checkForExit() {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             System.exit(0);
