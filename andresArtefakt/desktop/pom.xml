@@ -13,7 +13,7 @@
 	<name>AndresGame desktop</name>
 
 	<properties>
-		<mainClass>de.willkowsky.java.AndresGameDesktopAlt</mainClass>
+		<mainClass>de.willkowsky.java.AndresGameDesktop</mainClass>
 	</properties>
 
 	<dependencies>

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 import de.willkowsky.core.invaders.GameWorld;
 
@@ -23,20 +24,18 @@ public class Shot extends ModelInstance {
         this.invaders = invaders;
         this.ship = ship;
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            public boolean touchDown (int x, int y, int pointer, int button) {
-                setActive(true);
-                Vector3 shipPosition = new Vector3();
-                ship.transform.getTranslation(shipPosition);
-                transform.setToTranslation(shipPosition);
-                return true; // return true to indicate the event was handled
-            }
-
-            public boolean touchUp (int x, int y, int pointer, int button) {
-                // your touch up code here
-                return true; // return true to indicate the event was handled
-            }
-        });
+        //        Gdx.input.setInputProcessor(new InputAdapter() {
+        //            public boolean touchDown (int x, int y,
+        // int pointer, int button) {
+        //                setActive(true);
+        //                Vector3 shipPosition = new Vector3();
+        //                ship.transform.getTranslation
+        // (shipPosition);
+        //                transform.setToTranslation(shipPosition);
+        //                return true; // return true to indicate the event
+        // was handled
+        //            }
+        //        });
     }
 
     private void checkForHit() {
@@ -44,7 +43,8 @@ public class Shot extends ModelInstance {
             Vector3 shotPosition = new Vector3();
             transform.getTranslation(shotPosition);
             Vector3 instancePosition = new Vector3();
-            boolean isHit = shotPosition.dst(target.transform.getTranslation(instancePosition)) < Invader.DEAD_ZONE;
+            boolean isHit = shotPosition.dst(target.transform
+                .getTranslation(instancePosition)) < Invader.DEAD_ZONE;
             if (isHit) {
                 invaders.remove(target);
                 active = false;
@@ -69,7 +69,7 @@ public class Shot extends ModelInstance {
             checkForHit();
 
             Vector3 vector = new Vector3();
-             transform.getTranslation(vector);
+            transform.getTranslation(vector);
             if (!GameWorld.FIELD.contains(vector)) {
                 setActive(false);
             }
