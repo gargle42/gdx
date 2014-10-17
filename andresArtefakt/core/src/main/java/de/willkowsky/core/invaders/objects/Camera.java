@@ -24,12 +24,13 @@ public class Camera {
         camera.far = 300f;
         camera.update();
 
-        InvaderGestureListener invaderGestureListener = new
-            InvaderGestureListener(
-            cameraPosition);
-
-        Gdx.input
-            .setInputProcessor(new GestureDetector(invaderGestureListener));
+        //        InvaderGestureListener invaderGestureListener = new
+        //            InvaderGestureListener(
+        //            cameraPosition);
+        //
+        //        Gdx.input
+        //            .setInputProcessor(new GestureDetector
+        // (invaderGestureListener));
 
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 public class GameWorld {
 
     private ModelBatch modelBatch = new ModelBatch();
-    private Camera camera = new Camera();
+    public static Camera CAMERA = new Camera();
     private Ship  ship;
     private Shot shot;
     private InvasionFleet invasionFleet = new InvasionFleet();
@@ -42,17 +42,17 @@ public class GameWorld {
         ship.update(delta);
         invasionFleet.update(delta);
         shot.update(delta);
-        camera.update();
+        CAMERA.update();
 
         if (invasionFleet.hasArrived(ship)) {
         }
     }
 
     private void renderModels() {
-        modelBatch.begin(camera.getCamera());
+        modelBatch.begin(CAMERA.getCamera());
         modelBatch.render(getModelInstances());
         modelBatch.end();
-        camera.getCamera().update();
+        CAMERA.getCamera().update();
     }
 
     private List<ModelInstance> getModelInstances() {

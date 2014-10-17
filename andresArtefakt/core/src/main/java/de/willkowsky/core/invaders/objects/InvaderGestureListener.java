@@ -22,7 +22,7 @@ public class InvaderGestureListener extends GestureDetector.GestureAdapter {
         float pinchDifference = dstAfter - dstBefore;
         cameraPosition.z -= pinchDifference/1000;
 
-        return true;
+        return false;
     }
 
 }
