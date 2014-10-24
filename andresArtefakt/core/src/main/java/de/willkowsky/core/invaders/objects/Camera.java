@@ -39,20 +39,22 @@ public class Camera {
     }
 
     public void update() {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            cameraPosition.x += .1;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            cameraPosition.x -= .1;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            cameraPosition.y -= .1;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            cameraPosition.y += .1;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            cameraPosition.z -= .1;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            cameraPosition.z += .1;
+       if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                cameraPosition.x += .1;
+            } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                cameraPosition.x -= .1;
+            } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                cameraPosition.y -= .1;
+            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                cameraPosition.y += .1;
+            } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                cameraPosition.z -= .1;
+            } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                cameraPosition.z += .1;
+            }
+            camera.position.set(cameraPosition);
+            camera.update();
         }
-        camera.position.set(cameraPosition);
-        camera.update();
     }
 }

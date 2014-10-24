@@ -20,5 +20,7 @@ Installiert und _startet_ die app auf dem Device
 
 mvn clean install -Pdesktop
 
-
+So werden Blenderdateien in g3db konvertiert:
+export LD_LIBRARY_PATH=~/mount/work/fbx
+~/mount/work/fbx/fbx-conv-lin64 -f -v ~/Desktop/blender/monkey-heile.fbx
 

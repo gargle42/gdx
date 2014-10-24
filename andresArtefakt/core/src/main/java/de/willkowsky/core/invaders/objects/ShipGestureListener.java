@@ -1,9 +1,9 @@
 package de.willkowsky.core.invaders.objects;
 
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import de.willkowsky.core.invaders.GameWorld;
+import de.willkowsky.core.invaders.misc.ModelFactory;
 
 public class ShipGestureListener extends GestureDetector.GestureAdapter {
 
@@ -15,14 +15,9 @@ public class ShipGestureListener extends GestureDetector.GestureAdapter {
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        Vector3 screenCoordinates = new Vector3(x, y, 0f);
-
-        Vector3 worldCoordinates = GameWorld.CAMERA.getCamera()
-            .unproject(screenCoordinates);
-
+        Vector3 worldCoordinates = new Vector3(x, y, 1f);
+        GameWorld.camera.getCamera().unproject(worldCoordinates);
         ship.moveShip(worldCoordinates);
-
-
         return false;
     }
 

@@ -9,33 +9,33 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Ship extends ModelInstance {
 
-    ShipGestureListener shipGestureListener;
-
     public Ship(Model model) {
         super(model);
-        shipGestureListener = new ShipGestureListener(this);
-        transform.translate(0f, (float) -17, 0f);
+        transform.translate(0f, -17f, 0f);
 
+        ShipGestureListener shipGestureListener;
+        shipGestureListener = new ShipGestureListener(this);
         Gdx.input.setInputProcessor(new GestureDetector(shipGestureListener));
     }
 
     public void update(float delta) {
-
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            move(true);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            transform.translate(.2f, 0f, 0f);
+        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                move(true);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                move(false);
+            }
         }
     }
 
-    public void move(boolean left) {
-        float direction = left ? -1f : 1f;
+    public void move(boolean moveLeft) {
+        float direction = moveLeft ? -1f : 1f;
         transform.translate(direction * .2f, 0f, 0f);
     }
 
     public void moveShip(Vector3 worldCoordinates) {
         Vector3 myPosition = transform.getTranslation(new Vector3());
-        boolean direction = myPosition.x > worldCoordinates.x ;
-        move(direction);
+        boolean moveLeft = worldCoordinates.x/15f < myPosition.x;
+        move(moveLeft);
     }
 }
