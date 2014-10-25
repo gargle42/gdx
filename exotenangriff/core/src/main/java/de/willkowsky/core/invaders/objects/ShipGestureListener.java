@@ -3,7 +3,6 @@ package de.willkowsky.core.invaders.objects;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 import de.willkowsky.core.invaders.GameWorld;
-import de.willkowsky.core.invaders.misc.ModelFactory;
 
 public class ShipGestureListener extends GestureDetector.GestureAdapter {
 

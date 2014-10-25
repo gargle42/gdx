@@ -2,7 +2,6 @@ package de.willkowsky.core.invaders;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 
 public class Game extends com.badlogic.gdx.Game {
 

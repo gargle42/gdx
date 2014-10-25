@@ -9,7 +9,7 @@ namespace de.willkowsky
 {
 	[Register ("AppDelegate")]
 	public partial class AppDelegate : IOSApplication {
-		public AppDelegate () : base(new AndresGame(), createConfig()) {}
+		public AppDelegate () : base(new Exotenangriff(), createConfig()) {}
 
 		internal static IOSApplicationConfiguration createConfig () {
 			IOSApplicationConfiguration config = new IOSApplicationConfiguration();

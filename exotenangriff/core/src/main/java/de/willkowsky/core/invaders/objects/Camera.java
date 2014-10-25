@@ -3,7 +3,6 @@ package de.willkowsky.core.invaders.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 
 public class Camera {
@@ -13,10 +12,10 @@ public class Camera {
 
     private Vector3 cameraPosition = new Vector3(X, Y, 30f);
 
-    private com.badlogic.gdx.graphics.PerspectiveCamera camera;
+    private PerspectiveCamera camera;
 
     public Camera() {
-        camera = new com.badlogic.gdx.graphics.PerspectiveCamera(80,
+        camera = new PerspectiveCamera(80,
             Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(cameraPosition);
         camera.lookAt(X, Y, 0f);

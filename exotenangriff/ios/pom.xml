@@ -4,19 +4,19 @@
 				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>andresGroup</groupId>
-		<artifactId>andresArtefakt</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<groupId>de.willkowsky</groupId>
+		<artifactId>exotenangriff</artifactId>
+		<version>0.0.1</version>
 	</parent>
 
-	<artifactId>andresArtefakt-ios</artifactId>
+	<artifactId>exotenangriff-ios</artifactId>
 	<packaging>dll</packaging>
-	<name>AndresGame iOS</name>
+	<name>Exotenangriff iOS</name>
 
 	<dependencies>
 		<dependency>
-			<groupId>andresGroup</groupId>
-			<artifactId>andresArtefakt-core</artifactId>
+			<groupId>de.willkowsky</groupId>
+			<artifactId>exotenangriff-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

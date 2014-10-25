@@ -3,14 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>andresGroup</groupId>
-		<artifactId>andresArtefakt</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<groupId>de.willkowsky</groupId>
+		<artifactId>exotenangriff</artifactId>
+		<version>0.0.1</version>
 	</parent>
 
-	<artifactId>andresArtefakt-android</artifactId>
+	<artifactId>exotenangriff-android</artifactId>
 	<packaging>apk</packaging>
-	<name>AndresGame Android</name>
+	<name>Exotenangriff Android</name>
 
 	<properties>
 		<keystore.path>game.keystore</keystore.path>
@@ -22,8 +22,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>andresGroup</groupId>
-			<artifactId>andresArtefakt-core</artifactId>
+			<groupId>de.willkowsky</groupId>
+			<artifactId>exotenangriff-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -51,19 +51,7 @@
 			<version>${android.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-bullet</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-bullet-platform</artifactId>
-            <classifier>natives-armeabi-v7a</classifier>
-            <version>${gdx.version}</version>
-        </dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<!-- output APK doesn't contain version number, needed for Intellij Idea -->

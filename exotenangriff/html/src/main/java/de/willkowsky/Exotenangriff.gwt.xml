@@ -1,4 +1,4 @@
-<module rename-to='andresArtefakt'>
+<module rename-to='exotenangriff'>
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 
 	<source path='core'/>
@@ -6,7 +6,7 @@
 
 	<public path="resources" />
 
-	<entry-point class='de.willkowsky.html.AndresGameHtml'/>
+	<entry-point class='de.willkowsky.html.ExotenangriffHtml'/>
 	<set-configuration-property name="gdx.assetpath" value="assets" />
 	<set-configuration-property name="gdx.assetoutputpath" value="html/target/webapp" />
 </module>

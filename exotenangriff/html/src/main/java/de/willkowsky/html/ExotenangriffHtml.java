@@ -1,14 +1,15 @@
 package de.willkowsky.html;
 
+import de.willkowsky.core.Exotenangriff;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import de.willkowsky.core.invaders.Game;
 
-public class AndresGameHtml extends GwtApplication {
+public class ExotenangriffHtml extends GwtApplication {
 	@Override
 	public ApplicationListener getApplicationListener () {
-		return new Game();
+		return new Exotenangriff();
 	}
 	
 	@Override
