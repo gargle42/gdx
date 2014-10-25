@@ -16,10 +16,11 @@ public class Shot extends ModelInstance {
 
     public static final float SHOT_SPEED = Invader.HEIGHT * 20f;
     private boolean active;
-    private List<Invader> invaders;
+    private List<ModelInstance> invaders;
     private ModelInstance ship;
 
-    public Shot(Model model, List<Invader> invaders, final ModelInstance ship) {
+    public Shot(Model model, List<ModelInstance> invaders,
+        final ModelInstance ship) {
         super(model);
         this.invaders = invaders;
         this.ship = ship;
@@ -30,15 +31,17 @@ public class Shot extends ModelInstance {
 
     private void checkForHit() {
         for (ModelInstance target : Collections.unmodifiableList(invaders)) {
-            Vector3 shotPosition = new Vector3();
-            transform.getTranslation(shotPosition);
-            Vector3 instancePosition = new Vector3();
-            boolean isHit = shotPosition.dst(target.transform
-                .getTranslation(instancePosition)) < Invader.DEAD_ZONE;
-            if (isHit) {
-                invaders.remove(target);
-                active = false;
-                return;
+            if (target != this && target != ship) {
+                Vector3 shotPosition = new Vector3();
+                transform.getTranslation(shotPosition);
+                Vector3 instancePosition = new Vector3();
+                boolean isHit = shotPosition.dst(target.transform
+                    .getTranslation(instancePosition)) < Invader.DEAD_ZONE;
+                if (isHit) {
+                    invaders.remove(target);
+                    setActive(false);
+                    return;
+                }
             }
         }
     }
@@ -62,6 +65,11 @@ public class Shot extends ModelInstance {
 
     public void setActive(boolean active) {
         this.active = active;
+        if (active) {
+            invaders.add(this);
+        } else {
+            invaders.remove(this);
+        }
     }
 
     class ShotInputAdapter extends InputAdapter {
@@ -72,6 +80,9 @@ public class Shot extends ModelInstance {
                     setActive(true);
                     Vector3 shipPosition = new Vector3();
                     ship.transform.getTranslation(shipPosition);
+                    // Schussposition korrigieren, damit der mittig aus dem
+                    // Schiff herauskommt
+                    shipPosition.x += 2;
                     transform.setToTranslation(shipPosition);
                 }
             }
