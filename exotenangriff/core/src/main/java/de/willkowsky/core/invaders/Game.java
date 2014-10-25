@@ -1,7 +1,6 @@
 package de.willkowsky.core.invaders;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.*;
 
 public class Game extends com.badlogic.gdx.Game {
 
@@ -10,27 +9,36 @@ public class Game extends com.badlogic.gdx.Game {
 
     @Override
     public void render() {
-        checkForExit();
         getScreen().render(Gdx.graphics.getDeltaTime());
-    }
-
-    private void checkForExit() {
-        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
-            if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || Gdx.input
-                .isKeyPressed(Input.Keys.Q)) {
-                System.exit(0);
-            } else if (Gdx.input.isKeyPressed(Input.Keys.P) && (System
-                .currentTimeMillis() - lastPauseTimestamp) > 200) {
-                // Pause
-                Gdx.graphics.setContinuousRendering(continousRendering);
-                continousRendering = !continousRendering;
-                lastPauseTimestamp = System.currentTimeMillis();
-            }
-        }
     }
 
     @Override
     public void create() {
         setScreen(new GameScreen());
+
+        ((InputMultiplexer) Gdx.input.getInputProcessor())
+            .addProcessor(new GameInputAdapter());
+    }
+
+    class GameInputAdapter extends InputAdapter {
+        @Override
+        public boolean keyDown(int keycode) {
+            switch (keycode) {
+                case Input.Keys.ESCAPE:
+                case Input.Keys.Q:
+                    System.exit(0);
+                case Input.Keys.P:
+                    if ((System
+                        .currentTimeMillis() - lastPauseTimestamp) > 200) {
+                        // Pausieren null alle 200ms erlauben
+                        Gdx.graphics.setContinuousRendering(continousRendering);
+                        continousRendering = !continousRendering;
+                        lastPauseTimestamp = System.currentTimeMillis();
+                    }
+                    break;
+            }
+
+            return super.keyDown(keycode);
+        }
     }
 }

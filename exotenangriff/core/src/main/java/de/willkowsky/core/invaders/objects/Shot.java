@@ -2,6 +2,8 @@ package de.willkowsky.core.invaders.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
@@ -22,18 +24,8 @@ public class Shot extends ModelInstance {
         this.invaders = invaders;
         this.ship = ship;
 
-        //        Gdx.input.setInputProcessor(new InputAdapter() {
-        //            public boolean touchDown (int x, int y,
-        // int pointer, int button) {
-        //                setActive(true);
-        //                Vector3 shipPosition = new Vector3();
-        //                ship.transform.getTranslation
-        // (shipPosition);
-        //                transform.setToTranslation(shipPosition);
-        //                return true; // return true to indicate the event
-        // was handled
-        //            }
-        //        });
+        ((InputMultiplexer) Gdx.input.getInputProcessor())
+            .addProcessor(new ShotInputAdapter());
     }
 
     private void checkForHit() {
@@ -52,16 +44,6 @@ public class Shot extends ModelInstance {
     }
 
     public void update(float delta) {
-
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            if (!isActive()) {
-                setActive(true);
-                Vector3 shipPosition = new Vector3();
-                ship.transform.getTranslation(shipPosition);
-                transform.setToTranslation(shipPosition);
-            }
-        }
-
         if (isActive()) {
             transform.translate(0f, SHOT_SPEED * delta, 0f);
             checkForHit();
@@ -80,5 +62,21 @@ public class Shot extends ModelInstance {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    class ShotInputAdapter extends InputAdapter {
+        @Override
+        public boolean keyDown(int keycode) {
+            if (Input.Keys.SPACE == keycode) {
+                if (!isActive()) {
+                    setActive(true);
+                    Vector3 shipPosition = new Vector3();
+                    ship.transform.getTranslation(shipPosition);
+                    transform.setToTranslation(shipPosition);
+                }
+            }
+
+            return super.keyDown(keycode);
+        }
     }
 }

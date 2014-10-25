@@ -2,7 +2,10 @@ package de.willkowsky.core.invaders.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 
 public class Camera {
@@ -15,22 +18,19 @@ public class Camera {
     private PerspectiveCamera camera;
 
     public Camera() {
-        camera = new PerspectiveCamera(80,
-            Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new PerspectiveCamera(80, Gdx.graphics.getWidth(),
+            Gdx.graphics.getHeight());
         camera.position.set(cameraPosition);
         camera.lookAt(X, Y, 0f);
         camera.near = 1f;
         camera.far = 300f;
         camera.update();
 
-        //        InvaderGestureListener invaderGestureListener = new
-        //            InvaderGestureListener(
-        //            cameraPosition);
-        //
-        //        Gdx.input
-        //            .setInputProcessor(new GestureDetector
-        // (invaderGestureListener));
+        ((InputMultiplexer) Gdx.input.getInputProcessor()).addProcessor(
+            new GestureDetector(new InvaderGestureListener(cameraPosition)));
 
+        ((InputMultiplexer) Gdx.input.getInputProcessor())
+            .addProcessor(new CameraInputAdapter());
     }
 
     public PerspectiveCamera getCamera() {
@@ -38,22 +38,37 @@ public class Camera {
     }
 
     public void update() {
-       if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
-            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                cameraPosition.x += .1;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                cameraPosition.x -= .1;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                cameraPosition.y -= .1;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                cameraPosition.y += .1;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                cameraPosition.z -= .1;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                cameraPosition.z += .1;
+    }
+
+    class CameraInputAdapter extends InputAdapter {
+        @Override
+        public boolean keyDown(int keycode) {
+
+            switch (keycode) {
+                case Input.Keys.A:
+                    cameraPosition.x += .1;
+                    break;
+                case Input.Keys.D:
+                    cameraPosition.x -= .1;
+                    break;
+                case Input.Keys.UP:
+                    cameraPosition.y -= .1;
+                    break;
+                case Input.Keys.DOWN:
+                    cameraPosition.y += .1;
+                    break;
+                case Input.Keys.W:
+                    cameraPosition.z -= .1;
+                    break;
+                case Input.Keys.S:
+                    cameraPosition.z += .1;
+                    break;
             }
+
             camera.position.set(cameraPosition);
             camera.update();
+
+            return super.keyDown(keycode);
         }
     }
 }

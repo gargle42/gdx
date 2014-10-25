@@ -1,5 +1,7 @@
 package de.willkowsky.core.invaders;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -19,7 +21,7 @@ import java.util.List;
 public class GameWorld {
 
     private ModelBatch modelBatch = new ModelBatch();
-    public static Camera camera = new Camera();
+    public static Camera camera;
     private Ship ship;
     private Shot shot;
     private InvasionFleet invasionFleet = new InvasionFleet();
@@ -32,19 +34,18 @@ public class GameWorld {
     }
 
     private void init() {
+        // damit alle Gameobjekte ihre eigenen Inputlistener hinzufügen
+        // können wird hier der InputMultiplexer benutzt
+        Gdx.input.setInputProcessor(new InputMultiplexer());
+
+        camera = new Camera();
         ModelFactory factory = ModelFactory.getInstance();
         ship = new Ship(factory.getShipModel());
         invasionFleet = new InvasionFleet();
         shot = new Shot(factory.getShotModel(), invasionFleet.getInvaders(),
             ship);
 
-        //        GameWorldGestureListener gameWorldGestureListener = new
-        //            GameWorldGestureListener(
-        //            this);
-        //        Gdx.input
-        //            .setInputProcessor(new GestureDetector
-        // (gameWorldGestureListener));
-
+        // Beleuchtung definieren
         environment.set(
             new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f,
                 1f));
@@ -71,10 +72,6 @@ public class GameWorld {
         modelBatch.begin(camera.getCamera());
         modelBatch.render(getModelInstances(), environment);
         modelBatch.end();
-    }
-
-    public void replaceShip() {
-        ship = new Ship(ModelFactory.getInstance().getShipModel());
     }
 
     private List<ModelInstance> getModelInstances() {
