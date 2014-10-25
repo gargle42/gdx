@@ -1,11 +1,9 @@
 package de.willkowsky.android;
 
-import de.willkowsky.core.Exotenangriff;
-
 import android.os.Bundle;
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import de.willkowsky.core.invaders.Game;
 
 public class ExotenangriffActivity extends AndroidApplication {
 
@@ -13,6 +11,6 @@ public class ExotenangriffActivity extends AndroidApplication {
 	public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-			initialize(new Exotenangriff(), config);
+			initialize(new Game(), config);
 	}
 }
