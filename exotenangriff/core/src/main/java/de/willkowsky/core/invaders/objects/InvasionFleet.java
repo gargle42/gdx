@@ -33,14 +33,20 @@ public class InvasionFleet {
 
     private void initInvasionFleet() {
         Model invaderModel = ModelFactory.getInstance().getInvaderModel();
+        BoundingBox bb = invaderModel.calculateBoundingBox(new BoundingBox());
+        bb.getDimensions();
+
         for (int i = 0; i < INVADER_COLUMNS; i++) {
             for (int j = 0; j < INVADER_ROWS; j++) {
 
                 Invader invader = new Invader(invaderModel);
-                invader.transform.translate(
+                Vector3 vector3 = new Vector3(
                     (float) i * SPACE_X - (INVADER_COLUMNS + Invader.WIDTH),
                     (float) j * SPACE_Y - (INVADER_ROWS + Invader.HEIGHT), 0f);
+                invader.transform.translate(vector3);
                 invaders.add(invader);
+                System.out.println("invader i,j :" + i + ", " +
+                    j + ": " + vector3);
             }
         }
     }
@@ -57,7 +63,7 @@ public class InvasionFleet {
         float stepX = getStepX(delta);
 
         for (Invader invader : invaders) {
-            //invader.update(delta);
+            invader.update(delta);
 
             Matrix4 transform = invader.transform;
             Vector3 translation = transform.getTranslation(new Vector3());

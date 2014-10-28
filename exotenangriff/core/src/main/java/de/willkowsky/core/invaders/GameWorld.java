@@ -26,11 +26,13 @@ public class GameWorld {
     private Ship ship;
     private Shot shot;
     private InvasionFleet invasionFleet = new InvasionFleet();
-    public static BoundingBox FIELD = new BoundingBox(new Vector3(-30, -20, -1),
-        new Vector3(30, 7, 1));
+    private static Vector3 boundingBoxLeft = new Vector3(-30, -20, -1);
+    private static Vector3 boundingBoxRight = new Vector3(30, 7, 1);
+    public static BoundingBox FIELD = new BoundingBox(boundingBoxLeft,
+        boundingBoxRight);
     private Environment environment = new Environment();
     List<ModelInstance> instances = null;
-    private ModelInstance marker;
+    private List<ModelInstance> debugModels = new ArrayList<ModelInstance>();
 
     public GameWorld() {
         init();
@@ -64,12 +66,26 @@ public class GameWorld {
 
         instances.add(ship);
         shot = new Shot(factory.getShotModel(), instances, ship);
-        Vector3 vector3 = new Vector3(2f, -6f, 0f);
 
+        addDebugModels();
+    }
+
+    private void addDebugModels() {
         Model model = new ModelBuilder()
-            .createArrow(vector3, camera.getCamera().position, new Material(),
+            .createXYZCoordinates(1f, new Material(),
                 Usage.Position | Usage.Normal | Usage.TextureCoordinates);
-        marker = new ModelInstance(model, 0, 0, 0);
+
+        debugModels.add(new ModelInstance(model, 0, 0, 0));
+        debugModels.add(new ModelInstance(model, camera.getCamera().position));
+        debugModels.add(new ModelInstance(model, boundingBoxLeft));
+        debugModels.add(new ModelInstance(model, boundingBoxLeft.x,
+            boundingBoxLeft.y, boundingBoxRight.z));
+
+        Vector3 vector3 = new Vector3(2f, -6f, 0f);
+        model = new ModelBuilder()
+            .createArrow(camera.getCamera().position, vector3, new Material(),
+                Usage.Position | Usage.Normal | Usage.TextureCoordinates);
+        debugModels.add(new ModelInstance(model, 0, 0, 0));
     }
 
     public void render(float delta) {
@@ -90,7 +106,7 @@ public class GameWorld {
     private void renderModels() {
         modelBatch.begin(camera.getCamera());
         modelBatch.render(instances, environment);
-        modelBatch.render(marker, environment);
+        modelBatch.render(debugModels, environment);
         modelBatch.end();
     }
 

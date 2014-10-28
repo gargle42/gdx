@@ -32,29 +32,55 @@ public class Invader extends ModelInstance {
     }
 
     private float getSpeed() {
-        return (float)random.nextInt(((int)ROTATION_SPEED) * 10 ) + 1f;
+        return 135f;
+        //        return (float) random.nextInt(((int) ROTATION_SPEED) * 10)
+        // + 1f;
     }
 
     private float getDirection() {
-        return (random.nextInt(2) % 2) == 1 ? -1 : 1;
+        //                return 1f;
+        return (random.nextInt(10)) == 1 ? -1 : 1;
     }
 
     public void update(float delta) {
         float degrees = getDegrees(delta);
         totalDegrees += degrees;
-        transform.rotate(axis, degrees);
+        //        Vector3 currentTranslation = transform.getTranslation(new
+        // Vector3());
+        //        System.out.println("currentTranslation " +
+        // currentTranslation);
+        //        transform.translate(-currentTranslation.x,
+        // -currentTranslation.y,
+        //            -currentTranslation.z);
+        Vector3 afterTranslation = transform.getTranslation(new Vector3());
+        System.out.println("afterTranslation " + afterTranslation);
+        //        transform.setToTranslation(0, 0, 0);
+        transform.translate(-2.7f/2, -1.9f/2, -.5f/2);
+        transform.rotate(Vector3.Z, degrees);
+        transform.translate(+2.7f/2, +1.9f/2, +.5f/2);
+//        transform.translate(afterTranslation);
+        //        transform.translate(currentTranslation.x,
+        // currentTranslation.y,
+        //            currentTranslation.z);
+
+        //        afterTranslation = transform.getTranslation(new Vector3());
+        //        System.out.println("afterTranslation2 " + afterTranslation
+        // + ": " +
+        //            axis);
     }
 
     private Vector3 getAxis() {
-        int i = random.nextInt(3);
-        switch (i) {
-            case 2 :
-               return Vector3.Y;
-            case 1 :
-                return Vector3.X;
-            default:
-                return Vector3.Z;
-        }
+        //        int i = random.nextInt(3);
+        //        switch (i) {
+        //            case 2:
+        //                return Vector3.Y;
+        //            case 1:
+        //                return Vector3.X;
+        //            default:
+        //                return Vector3.Z;
+        //        }
+
+        return Vector3.Z;
     }
 
     private float getDegrees(float delta) {
