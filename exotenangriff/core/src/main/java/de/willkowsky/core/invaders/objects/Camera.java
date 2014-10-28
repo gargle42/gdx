@@ -44,6 +44,7 @@ public class Camera {
             cameraPosition.add(cameraInputAdapter.getMovement());
             cameraPosition.rotate(cameraInputAdapter.getRotation(), 1f);
             camera.position.set(cameraPosition);
+            camera.lookAt(X, Y, 0f);
             camera.update();
         }
     }
