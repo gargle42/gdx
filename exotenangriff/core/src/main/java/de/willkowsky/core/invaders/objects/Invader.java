@@ -53,7 +53,7 @@ public class Invader extends ModelInstance {
         // -currentTranslation.y,
         //            -currentTranslation.z);
         Vector3 afterTranslation = transform.getTranslation(new Vector3());
-        System.out.println("afterTranslation " + afterTranslation);
+//        System.out.println("afterTranslation " + afterTranslation);
         //        transform.setToTranslation(0, 0, 0);
         transform.translate(-2.7f/2, -1.9f/2, -.5f/2);
         transform.rotate(Vector3.Z, degrees);
