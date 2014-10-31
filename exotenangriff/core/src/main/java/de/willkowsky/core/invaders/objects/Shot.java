@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
@@ -15,15 +16,17 @@ import java.util.List;
 public class Shot extends ModelInstance {
 
     public static final float SHOT_SPEED = Invader.HEIGHT * 20f;
+    private final Sound shotSound;
     private boolean active;
     private List<ModelInstance> invaders;
     private ModelInstance ship;
 
     public Shot(Model model, List<ModelInstance> invaders,
-        final ModelInstance ship) {
+        final ModelInstance ship, Sound shotSound) {
         super(model);
         this.invaders = invaders;
         this.ship = ship;
+        this.shotSound = shotSound;
 
         ((InputMultiplexer) Gdx.input.getInputProcessor())
             .addProcessor(new ShotInputAdapter());
@@ -38,6 +41,7 @@ public class Shot extends ModelInstance {
                 boolean isHit = shotPosition.dst(target.transform
                     .getTranslation(instancePosition)) < Invader.DEAD_ZONE;
                 if (isHit) {
+                    shotSound.play();
                     invaders.remove(target);
                     setActive(false);
                     return;

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
@@ -28,7 +29,8 @@ public class GameWorld {
     private static Vector3 boundingBoxRight = new Vector3(30, 7, 1);
     public static BoundingBox FIELD = new BoundingBox(boundingBoxLeft,
         boundingBoxRight);
-    private List<ModelInstance> instances = new ArrayList<ModelInstance>();
+
+    private List<ModelInstance> instances = new ArrayList<>();
     private ModelBatch modelBatch = new ModelBatch();
     private Ship ship;
     private Shot shot;
@@ -37,7 +39,6 @@ public class GameWorld {
     private List<ModelInstance> debugModels = new ArrayList<ModelInstance>();
     private GameWorldInputAdapter gameWorldInputAdapter = new
         GameWorldInputAdapter();
-
     public GameWorld() {
         init();
     }
@@ -61,7 +62,8 @@ public class GameWorld {
 
         instances.addAll(invasionFleet.getInvaders());
         instances.add(ship);
-        shot = new Shot(factory.getShotModel(), instances, ship);
+        Sound shotSound = factory.getShotSound();
+        shot = new Shot(factory.getShotModel(), instances, ship, shotSound);
 
         ((InputMultiplexer) Gdx.input.getInputProcessor())
             .addProcessor(gameWorldInputAdapter);
@@ -69,16 +71,20 @@ public class GameWorld {
     }
 
     /**
-     * Die hier definierten modelle werden über eine Taste sichtbar gemacht,
+     * Die hier definierten Modelle werden über eine Taste sichtbar gemacht,
      * um Orientierungshilfen im Spielfeld einzublenden
      */
     private List<ModelInstance> buildDebugModels() {
         List<ModelInstance> result = new ArrayList<ModelInstance>();
 
-        Model model = new ModelBuilder()
-            .createXYZCoordinates(1f, new Material(),
-                Usage.Position | Usage.Normal | Usage.TextureCoordinates);
+        Material material = new Material();
+        ColorAttribute attr = ColorAttribute
+            .createDiffuse(5f, 5f, 100f, 1);
+        material.set(attr);
 
+        Model model = new ModelBuilder()
+            .createXYZCoordinates(1f, material,
+                Usage.Position | Usage.Normal | Usage.TextureCoordinates);
 
         result.add(new ModelInstance(model, 0, 0, 0));
         result.add(new ModelInstance(model, camera.getCamera().position));
@@ -88,15 +94,17 @@ public class GameWorld {
                 boundingBoxRight.z));
 
         model = new ModelBuilder()
-            .createLineGrid(10, 10, 40, 50, new Material(),
+            .createLineGrid(10, 10, 40, 50, material,
                 Usage.Position | Usage.Normal | Usage.TextureCoordinates);
         result.add(new ModelInstance(model, 0, 0, 0));
-//
-//        Vector3 vector3 = new Vector3(2f, -6f, 0f);
-//        model = new ModelBuilder()
-//            .createArrow(camera.getCamera().position, vector3, new Material(),
-//                Usage.Position | Usage.Normal | Usage.TextureCoordinates);
-//        result.add(new ModelInstance(model, 0, 0, 0));
+        //
+        //        Vector3 vector3 = new Vector3(2f, -6f, 0f);
+        //        model = new ModelBuilder()
+        //            .createArrow(camera.getCamera().position, vector3,
+        // new Material(),
+        //                Usage.Position | Usage.Normal | Usage
+        // .TextureCoordinates);
+        //        result.add(new ModelInstance(model, 0, 0, 0));
 
         return result;
     }
