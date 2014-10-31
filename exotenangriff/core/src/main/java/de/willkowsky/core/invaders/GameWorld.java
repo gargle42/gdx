@@ -30,7 +30,7 @@ public class GameWorld {
     public static BoundingBox FIELD = new BoundingBox(boundingBoxLeft,
         boundingBoxRight);
 
-    private List<ModelInstance> instances = new ArrayList<>();
+    private List<ModelInstance> instances = new ArrayList<ModelInstance>();
     private ModelBatch modelBatch = new ModelBatch();
     private Ship ship;
     private Shot shot;

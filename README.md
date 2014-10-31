@@ -35,8 +35,10 @@ Installiert und _startet_ die app auf dem Device
 
     mvn clean install -Pdesktop
 
-So werden Blenderdateien in g3db konvertiert:
+So wird zum Beispiel das Model für die Exoten-Blenderdateien in g3db
+konvertiert (die erzeugten Dateien werden ins gleiche Verzeichnis wie die
+sourcen geschrieben):
 
     export LD_LIBRARY_PATH=~/mount/work/fbx
-    ~/mount/work/fbx/fbx-conv-lin64 -f -v ~/Desktop/blender/monkey-heile.fbx
+    ~/mount/work/fbx/fbx-conv-lin64 -f -v ~/mount/repositories/githubGit/gdx/exotenangriff/blendersources/exot/invader1.fbx
 
